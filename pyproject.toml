@@ -10,6 +10,24 @@ python = "^3.12"
 djangorestframework = "^3.15.2"
 django = "^5.1.4"
 
+[tool.poetry.group.dev.dependencies]
+pre-commit = "^4.0.1"
+pytest-asyncio = "^0.25.1"
+httpie = "^3.2.4"
+ipykernel = "^6.29.5"
+jupyter = "^1.1.1"
+radon = "^6.0.1"
+pyright = "^1.1.391"
+mypy = "^1.14.1"
+python-lsp-server = {extras = ["all"], version = "^1.12.0"}
+black = "^24.10.0"
+pyupgrade = "^3.19.1"
+ruff = "^0.8.6"
+skjold = "^0.6.2"
+bandit = "^1.8.0"
+coverage = "^7.6.10"
+logfire = "^2.11.1"
+gitlint = "^0.19.1"
 
 [build-system]
 requires = ["poetry-core"]
