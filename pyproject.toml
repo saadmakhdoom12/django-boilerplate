@@ -28,6 +28,7 @@ bandit = "^1.8.0"
 coverage = "^7.6.10"
 logfire = "^2.11.1"
 gitlint = "^0.19.1"
+django-stubs = "^5.1.1"
 
 [build-system]
 requires = ["poetry-core"]
