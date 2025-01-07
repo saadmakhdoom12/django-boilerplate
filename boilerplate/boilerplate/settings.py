@@ -39,6 +39,8 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "app.apps.MyAppConfig",
+    "rest_framework",
 ]
 
 MIDDLEWARE = [
@@ -150,7 +152,7 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 print(env.str("DB_NAME"))
 
 
-AUTH_USER_MODEL = "accounts.CustomUser"
+AUTH_USER_MODEL = "app.CustomUser"
 
 # Initialize environs
 env = Env()
