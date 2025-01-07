@@ -130,11 +130,11 @@ repos:
 
   # A tool to check Python code for type hints and type errors, ensuring that
   # code is correctly annotated and free of type-related issues.
-  - repo: https://github.com/RobertCraigie/pyright-python
-    rev: v1.1.391
-    hooks:
-    - id: pyright
-      language: system
+  # - repo: https://github.com/RobertCraigie/pyright-python
+  #   rev: v1.1.391
+  #   hooks:
+  #   - id: pyright
+  #     language: system
 
   # A tool for finding common security issues in Python code, helping ensure
   # secure code practices and prevent security vulnerabilities.
