@@ -148,6 +148,3 @@ STATIC_URL = "static/"
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 print(env.str("DB_NAME"))
-
-
-AUTH_USER_MODEL = "accounts.CustomUser"
