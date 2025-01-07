@@ -48,8 +48,8 @@ class LoginView(APIView):
         serializer = LoginSerializer(data=request.data)
         if serializer.is_valid():
             user = authenticate(
-                username=serializer.data["username"],
-                password=serializer.data["password"],
+                username=serializer.validated_data["username"],
+                password=serializer.validated_data["password"],
             )
             if user:
                 refresh = RefreshToken.for_user(user)
