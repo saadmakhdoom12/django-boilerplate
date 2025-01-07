@@ -1,4 +1,4 @@
-""" " token"""
+"""Auth token"""
 
 from django.contrib.auth.tokens import PasswordResetTokenGenerator
 

@@ -1,16 +1,15 @@
 """imports"""
 
-from boilerplate.app.token import account_activation_token
-from django.conf import settings
-from django.contrib.auth import get_user_model
-from django.core.mail import send_mail
-from rest_framework import status
-from rest_framework.response import Response
 from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import status
 from rest_framework_simplejwt.tokens import RefreshToken
+from django.core.mail import send_mail
+from django.conf import settings
 from django.contrib.auth import authenticate
-
-from .serializers import LoginSerializer, SignupSerializer
+from .serializers import SignupSerializer, LoginSerializer
+from django.contrib.auth import get_user_model
+from .token import account_activation_token
 
 User = get_user_model()
 
@@ -66,3 +65,25 @@ class LoginView(APIView):
                 status=status.HTTP_401_UNAUTHORIZED,
             )
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class VerifyEmailView(APIView):
+    def post(self, request):
+        token = request.data.get("token")
+        email = request.data.get("email")
+        try:
+            user = User.objects.get(email=email)
+            if account_activation_token.check_token(user, token):
+                user.email_verified = True
+                user.save()
+                return Response(
+                    {"message": "Email verified successfully."},
+                    status=status.HTTP_200_OK,
+                )
+            return Response(
+                {"error": "Invalid token."}, status=status.HTTP_400_BAD_REQUEST
+            )
+        except User.DoesNotExist:
+            return Response(
+                {"error": "User not found."}, status=status.HTTP_404_NOT_FOUND
+            )
