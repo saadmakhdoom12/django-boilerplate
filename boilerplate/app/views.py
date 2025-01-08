@@ -1,14 +1,14 @@
 """imports"""
 
-from rest_framework.views import APIView
-from rest_framework.response import Response
-from rest_framework import status
-from rest_framework_simplejwt.tokens import RefreshToken
-from django.core.mail import send_mail
 from django.conf import settings
-from django.contrib.auth import authenticate
-from .serializers import SignupSerializer, LoginSerializer
-from django.contrib.auth import get_user_model
+from django.contrib.auth import authenticate, get_user_model
+from django.core.mail import send_mail
+from rest_framework import status
+from rest_framework.response import Response
+from rest_framework.views import APIView
+from rest_framework_simplejwt.tokens import RefreshToken
+
+from .serializers import LoginSerializer, SignupSerializer
 from .token import account_activation_token
 
 User = get_user_model()
@@ -22,7 +22,14 @@ class SignupView(APIView):
 
         serializer = SignupSerializer(data=request.data)
         if serializer.is_valid():
-            user = serializer.save()
+            user = serializer.save(commit=False)
+            if isinstance(user, User):
+                user.save()
+            else:
+                return Response(
+                    {"error": "User creation failed."},
+                    status=status.HTTP_400_BAD_REQUEST,
+                )
             token = account_activation_token.make_token(user)
             # Send verification email
             send_mail(
@@ -47,9 +54,15 @@ class LoginView(APIView):
     def post(self, request):
         serializer = LoginSerializer(data=request.data)
         if serializer.is_valid():
+            validated_data = serializer.validated_data
+            if not isinstance(validated_data, dict):
+                return Response(
+                    {"error": "Validation failed."},
+                    status=status.HTTP_400_BAD_REQUEST,
+                )
             user = authenticate(
-                username=serializer.data["username"],
-                password=serializer.data["password"],
+                username=validated_data.get("username"),
+                password=validated_data.get("password"),
             )
             if user:
                 refresh = RefreshToken.for_user(user)
@@ -74,7 +87,9 @@ class VerifyEmailView(APIView):
         try:
             user = User.objects.get(email=email)
             if account_activation_token.check_token(user, token):
-                user.email_verified = True
+                user.email_verified = (
+                    True  # Correct assignment to the user instance
+                )
                 user.save()
                 return Response(
                     {"message": "Email verified successfully."},
