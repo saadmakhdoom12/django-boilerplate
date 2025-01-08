@@ -3,6 +3,7 @@
 __pycache__/
 *.py[cod]
 *$py.class
+0001_initial.py
 
 # C extensions
 *.so
