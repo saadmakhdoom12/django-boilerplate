@@ -1,3 +1,5 @@
+""" URL Configuration for the app module """
+
 from django.urls import path
 from .views import SignupView, LoginView, VerifyEmailView
 

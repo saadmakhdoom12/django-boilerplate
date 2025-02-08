@@ -1,4 +1,4 @@
-"""imports"""
+"""Views for the app."""
 
 from django.conf import settings
 from django.contrib.auth import authenticate, get_user_model
